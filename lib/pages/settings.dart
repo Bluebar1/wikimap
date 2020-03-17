@@ -51,8 +51,7 @@ class Settings extends StatelessWidget {
                     children: <Widget>[
                       FilterChip(
                         label: Text('Swix',
-                            style:
-                            TextStyle(color: Theme.of(context).accentColor)),
+                            style: TextStyle(color: Theme.of(context).accentColor)),
                         selected: (settingsProvider.waxLines.contains('Swix')) ? true : false,
                         onSelected: (bool value) {
                           if (value == true){
@@ -174,7 +173,7 @@ class Settings extends StatelessWidget {
             },
             child: const Text('Change Accent Color'),
             color: settingsProvider.accentColor,
-            textColor: useWhiteForeground(Colors.white)
+            textColor: useWhiteForeground(settingsProvider.accentColor)
                 ? const Color(0xffffffff)
                 : const Color(0xff000000),
           ),

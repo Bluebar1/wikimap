@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:wiki_map/pages/geosearch.dart';
+import 'package:wiki_map/pages/wiki_search_results.dart';
 import 'package:wiki_map/providers/map_provider.dart';
 import 'package:wiki_map/providers/wiki_article_provider.dart';
 
-
-
-class MapView extends StatelessWidget { //was wikimap?
+class GeoSearch extends StatelessWidget {
   //BuildContext get getContext => context;
   @override
   Widget build(BuildContext context) {
     var mapProvider = Provider.of<MapProvider>(context);
-    return new Scaffold(
+    return Scaffold(
         body: GoogleMap(
           markers: mapProvider.setOfMarkers,
           mapType: MapType.normal,
@@ -45,7 +43,7 @@ class MapView extends StatelessWidget { //was wikimap?
                               create: (context) => WikiArticleProvider(mapProvider),
                               child: Consumer<WikiArticleProvider>(
                                 builder: (context, wikiProvider, child){
-                                  if(wikiProvider.imageUrlList == null) {
+                                  if(wikiProvider.imageUrlList == null && wikiProvider.summaryList == null) {
                                     return Container(
                                       decoration: BoxDecoration(
                                           color: Colors.transparent
@@ -55,7 +53,7 @@ class MapView extends StatelessWidget { //was wikimap?
                                       ),
                                     );
                                   } else {
-                                    return GeoSearch();
+                                    return WikiSearchResults();
                                   }
                                 },
                               ),
