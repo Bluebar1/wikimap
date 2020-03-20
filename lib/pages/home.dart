@@ -54,7 +54,7 @@ class Home extends StatelessWidget {
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText: 'Enter Latitude Here',
+                          hintText: 'Enter Latituude Here',
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -63,7 +63,10 @@ class Home extends StatelessWidget {
                       height: 20,
                       width: 200,
                       child: TextField(
-                        keyboardType: TextInputType.number,
+                        toolbarOptions: ToolbarOptions(copy: true),
+                        keyboardType: TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Enter Longitude Here',
