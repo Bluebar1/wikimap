@@ -10,7 +10,7 @@ class MapProvider with ChangeNotifier{
   double _latValue;
   double _lonValue;
   Set<Marker> _newsetOfMarkers;
-  CameraPosition _kGooglePlex;
+  CameraPosition _startingCameraPosition;
   Completer<GoogleMapController> _controller;
   String _title;
   int _pageId;
@@ -21,12 +21,14 @@ class MapProvider with ChangeNotifier{
   List<double> _mapDistanceList;
   List<double> _mapLatitudeList;
   List<double> _mapLongitudeList;
+  LatLng _startingLocation;
+  String _wikiLocationUrl;
 
 
   double get latValue => _latValue;
   double get lonValue => _lonValue;
   Set<Marker> get setOfMarkers => _newsetOfMarkers;
-  CameraPosition get kGooglePlex => _kGooglePlex;
+  CameraPosition get startingCameraPosition => _startingCameraPosition;
   Completer<GoogleMapController> get controller => _controller;
   String get title => _title; //this is used to send the title to the wiki article provider
   int get pageId => _pageId;
@@ -37,16 +39,20 @@ class MapProvider with ChangeNotifier{
   List<double> get mapDistanceList => _mapDistanceList;
   List<double> get mapLatitudeList => _mapLatitudeList;
   List<double> get mapLongitudeList => _mapLongitudeList;
+  LatLng get startingLocation => _startingLocation;
 
-  String wikiUrlStart = Uri.encodeFull("https://en.wikipedia.org/w/api.php?" + "action=query&list=geosearch&gscoord=" + "42.730936" + "|" + " -73.761912" + "&gsradius=10000&gslimit=10&format=json");//&callback=?");
+  //String wikiUrlStart = Uri.encodeFull("https://en.wikipedia.org/w/api.php?" + "action=query&list=geosearch&gscoord=" + "42.730936" + "|" + " -73.761912" + "&gsradius=10000&gslimit=10&format=json");//&callback=?");
   String wikiSummaryUrl = Uri.encodeFull("https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=");
   Map<String, String> headers = {
     "Accept": "text/plain"
   };
 
-  MapProvider() {
-    _kGooglePlex = CameraPosition(
-        target: LatLng(42.730936, -73.761912),
+  MapProvider(double inputLatitude, double inputLongitude) {
+    _wikiLocationUrl = Uri.encodeFull("https://en.wikipedia.org/w/api.php?" + "action=query&list=geosearch&gscoord=" + inputLatitude.toString() + "|" + inputLongitude.toString() + "&gsradius=10000&gslimit=10&format=json");
+    print("==================================MAP PROVIDER CONSTRUCTOR CALLED====================================="+ _wikiLocationUrl.toString());
+    _startingLocation = LatLng(inputLatitude, inputLongitude);
+    _startingCameraPosition = CameraPosition(
+        target: _startingLocation,
         zoom: 13//14.4746,
     );
     _controller = Completer();
@@ -73,8 +79,15 @@ class MapProvider with ChangeNotifier{
     notifyListeners();
   }
 
-  void setLatValue(double latValue) {
-    _latValue = latValue;
+  void setLatValue(var latValue) {
+    if(!(latValue.runtimeType == int)) { //translation: if the latValue is not an integer
+      _latValue = latValue;
+    }
+    else {
+      double _tempLat = double.parse(latValue.toString());
+      _latValue = _tempLat;
+    }
+
     notifyListeners();
   }
 
@@ -88,8 +101,15 @@ class MapProvider with ChangeNotifier{
     notifyListeners();
   }
 
-  void setLonValue(double lonValue) {
-    _lonValue = lonValue;
+  void setLonValue(var lonValue) {
+    if(!(lonValue.runtimeType == int)) {
+      _lonValue = lonValue;
+    }
+    else {
+      double _tempLon = double.parse(lonValue.toString());
+      _lonValue = _tempLon;
+    }
+
     notifyListeners();
   }
 
@@ -129,7 +149,7 @@ class MapProvider with ChangeNotifier{
     Marker _tempHomeMarker = Marker(
         markerId: MarkerId('0'),
         icon: BitmapDescriptor.defaultMarkerWithHue(50),
-        position: LatLng(42.748236, -73.839402),
+        position: _startingLocation,
         infoWindow: InfoWindow(
             title: 'STARTING POINT'
         )
@@ -137,12 +157,15 @@ class MapProvider with ChangeNotifier{
     _markers.add(_tempHomeMarker);
 
     var response = await http.get(
-        wikiUrlStart,
+        _wikiLocationUrl,
         headers: headers
     );
     String jsonsDataString = response.body
         .toString(); // toString of Response's body is assigned to jsonDataString
     var _data = json.jsonDecode(jsonsDataString);
+    print('VAR DATA CALLED HERE======================================='+ _data.toString());
+    print(_data["query"]["geosearch"][0]["lat"].runtimeType);
+    print(_data["query"]["geosearch"][0]["lat"].toString());
     if(!_data["query"]["geosearch"].isEmpty) {
       setLatValue(_data["query"]["geosearch"][0]["lat"]);
       setLonValue(_data["query"]["geosearch"][0]["lon"]);
@@ -159,7 +182,8 @@ class MapProvider with ChangeNotifier{
         _myMarker = Marker(
             markerId: MarkerId(prop.hashCode.toString()),
             icon: BitmapDescriptor.defaultMarkerWithHue(100),
-            position: LatLng(_data['query']['geosearch'][i]['lat'],
+            position: LatLng(
+                _data['query']['geosearch'][i]['lat'],
                 _data['query']['geosearch'][i]['lon']),
             infoWindow: InfoWindow(
                 title: _data['query']['geosearch'][i]['title']

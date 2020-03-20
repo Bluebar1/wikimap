@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:wiki_map/pages/home.dart';
 import 'package:wiki_map/providers/settings_provider.dart';
 import 'package:wiki_map/providers/theme_provider.dart';
+import 'package:wiki_map/providers/user_input_provider.dart';
 import 'package:wiki_map/style.dart';
 
 
@@ -11,8 +12,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-    return ChangeNotifierProvider(
-      create: (BuildContext context) => SettingsProvider(themeProvider),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<SettingsProvider>(create: (_) => SettingsProvider(themeProvider)),
+        ChangeNotifierProvider<UserInputProvider>(create: (_) => UserInputProvider())
+      ],
       child: MaterialApp(
         title: 'Wax App',
         theme: themeProvider.themeData,
