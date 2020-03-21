@@ -5,11 +5,11 @@ A wikipedia search app for ios and android, made in flutter.
 ## Getting Started
 
 In Terminal
-$ git clone <repo-link>
-$ cd wikimap
-$ flutter packages get
-$ flutter doctor
-$ flutter run
+$ git clone <repo-link> <br />
+$ cd wikimap <br />
+$ flutter packages get <br />
+$ flutter doctor <br />
+$ flutter run <br />
 
 A few resources to get you started if this is your first Flutter project:
 
