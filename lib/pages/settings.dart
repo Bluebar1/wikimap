@@ -22,13 +22,13 @@ class Settings extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text('Units'),
+                Text('Dropdown Single Selection'),
                 DropdownButton<String>(
-                  value: settingsProvider.units,
+                  value: settingsProvider.dropdownSingleSelection,
                   onChanged: (String value) {
-                    settingsProvider.setUnits(value);
+                    settingsProvider.setDropdownSingleSelection(value);
                   },
-                  items: <String>['Imperial', 'Metric']
+                  items: <String>['Option 1', 'Option 2']
                       .map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                         value: value, child: Text(value));
@@ -37,40 +37,40 @@ class Settings extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 10.0,),
+          SizedBox(height: 10.0),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text('Wax Lines'),
+                Text('Multiple Selection'),
                 Container(
                   child: Wrap(
                     spacing: 5.0,
                     runSpacing: 5.0,
                     children: <Widget>[
                       FilterChip(
-                        label: Text('Swix',
+                        label: Text('Option 1',
                             style: TextStyle(color: Theme.of(context).accentColor)),
-                        selected: (settingsProvider.waxLines.contains('Swix')) ? true : false,
+                        selected: (settingsProvider.multipleSelection.contains('Option 1')) ? true : false,
                         onSelected: (bool value) {
                           if (value == true){
-                            settingsProvider.addWaxLine('Swix');
+                            settingsProvider.addMultipleSelection('Option 1');
                           } else {
-                            settingsProvider.removeWaxLine('Swix');
+                            settingsProvider.removeMultipleSelection('Option 1');
                           }
                         },
                       ),
                       FilterChip(
-                        label: Text('Toko',
+                        label: Text('Option 2',
                             style:
                             TextStyle(color: Theme.of(context).accentColor)),
-                        selected: (settingsProvider.waxLines.contains('Toko')) ? true : false,
+                        selected: (settingsProvider.multipleSelection.contains('Option 2')) ? true : false,
                         onSelected: (bool value) {
                           if (value == true){
-                            settingsProvider.addWaxLine('Toko');
+                            settingsProvider.addMultipleSelection('Option 2');
                           } else {
-                            settingsProvider.removeWaxLine('Toko');
+                            settingsProvider.removeMultipleSelection('Option 2');
                           }
                         },
                       ),
@@ -87,9 +87,9 @@ class Settings extends StatelessWidget {
               3, (int index) {
               return ChoiceChip(
                 label: Text('${settingsProvider.speedString[index]}'),
-                selected: settingsProvider.speedSelect == index,
+                selected: settingsProvider.singleSelection == index,
                 onSelected: (bool selected) {
-                  selected ? settingsProvider.setSpeedSelect(index) : settingsProvider.setSpeedSelect(null);
+                  selected ? settingsProvider.setSingleSelection(index) : settingsProvider.setSingleSelection(null);
                 },
               );
             },
@@ -132,7 +132,7 @@ class Settings extends StatelessWidget {
             },
             child: const Text('Change Primary Color'),
             color: settingsProvider.themeColor,
-            textColor: useWhiteForeground(Colors.white)
+            textColor: useWhiteForeground(settingsProvider.themeColor)
                 ? const Color(0xffffffff)
                 : const Color(0xff000000),
           ),

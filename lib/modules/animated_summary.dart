@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
+/*
+Created NB 3/21/2020
 
+This is one of the only StatefulWidget classes in this project so far, because I usually-
+use Provider to store the state.
+ */
 class AnimatedSummary extends StatefulWidget {
   AnimatedSummary(this.text);
   final String text;
@@ -36,7 +41,7 @@ class _AnimatedSummary extends State<AnimatedSummary> with TickerProviderStateMi
             ),
             onPressed: () => setState(() => widget.isExpanded = false)),
       )//new ConstrainedBox(constraints: new BoxConstraints())
-          : (widget.text.length > 300)
+          : (widget.text.length > 250)
           ? Align(
         alignment: Alignment.topRight,
         child: FlatButton(
@@ -50,32 +55,3 @@ class _AnimatedSummary extends State<AnimatedSummary> with TickerProviderStateMi
     ]);
   }
 }
-
-/*
-                                    Column(
-                                      children: <Widget>[
-                                        AnimatedSize(
-                                          duration: const Duration(milliseconds: 500),
-                                          curve: Curves.linear,
-                                          vsync: this,
-                                          //vsync: this,
-
-                                          child: ConstrainedBox(
-                                            constraints: wikiArticleProvider.isSummaryExpanded ? BoxConstraints() : BoxConstraints(maxHeight:95.0),
-                                            child: Text(
-                                                wikiArticleProvider.summaryList[index],
-                                                style: Theme.of(context).textTheme.subhead,
-                                              softWrap: true,
-                                              overflow: TextOverflow.fade,
-                                            ))),
-                                        wikiArticleProvider.isSummaryExpanded
-                                          ? ConstrainedBox(constraints: BoxConstraints())
-                                            : FlatButton(
-                                          child: Text("Expande Summary"),
-                                          onPressed: () {
-                                            wikiArticleProvider.setSummaryTrue();
-                                          },
-                                        )
-                                      ],
-                                    )
- */

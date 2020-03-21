@@ -38,7 +38,7 @@ class WikiSearchResults extends StatelessWidget {
                             image: DecorationImage(
                                 image: NetworkImage(wikiArticleProvider.imageUrlList[index]),
                                 fit: BoxFit.cover,
-                                colorFilter: ColorFilter.mode(Color.fromRGBO(0, 0, 0, .75), BlendMode.darken)
+                                colorFilter: ColorFilter.mode(Color.fromRGBO(0, 0, 0, .55), BlendMode.darken)
                             )
                         ),
                         //height: 165.0,

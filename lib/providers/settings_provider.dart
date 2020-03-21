@@ -1,34 +1,36 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 import 'package:wiki_map/providers/theme_provider.dart';
 
+/*
+Created NB 3/21/2020
 
+This Provider class stores information for the Settings (settings.dart) class
+The first 3 widgets on the settings page are just examples and don't change anything else,
+but they are able to store if those selections even if the app in closed or turned off
+ */
 class SettingsProvider with ChangeNotifier{
-  String _units;
-  List<String> _waxLines;
-  List<String> _speedString;
-  int _speedSelect;
+  String _dropdownSingleSelection;
+  List<String> _multipleSelection;
+  List<String> _singleSelection;
+  int _singleSelectionChoice;
   Color _themeColor;
   Color _accentColor;
-  //TODO add custom theme color setting
 
   SettingsProvider(ThemeProvider themeProvider) {
-    _units='Imperial';
-    _waxLines = ['Swix','Toko'];
-    _speedSelect = 1;
-    _speedString = ['Slow','Medium','Fast'];
+    _dropdownSingleSelection='Option 1';
+    _multipleSelection = ['Option 1','Option 2'];
+    _singleSelectionChoice = 1;
+    _singleSelection = ['Option 1','Option 2','Option 3'];
     _themeColor = Color(themeProvider.hexOfCurrentPrimary);
     _accentColor = Color(themeProvider.hexOfCurrentBackground);
     loadPreferences();
   }
 
-  String get units => _units;
-  List<String> get waxLines => _waxLines;
-  int get speedSelect => _speedSelect;
-  List<String> get speedString => _speedString;
+  String get dropdownSingleSelection => _dropdownSingleSelection;
+  List<String> get multipleSelection => _multipleSelection;
+  int get singleSelection => _singleSelectionChoice;
+  List<String> get speedString => _singleSelection;
   Color get themeColor => _themeColor;
   Color get accentColor => _accentColor;
 
@@ -46,34 +48,34 @@ class SettingsProvider with ChangeNotifier{
     savePreferences();
   }
 
-  void setUnits(String units) {
-    _units = units;
+  void setDropdownSingleSelection(String units) {
+    _dropdownSingleSelection = units;
     notifyListeners();
     savePreferences();
   }
 
-  void setSpeedSelect(int speedSelect) {
-    _speedSelect = speedSelect;
+  void setSingleSelection(int speedSelect) {
+    _singleSelectionChoice = speedSelect;
     notifyListeners();
     savePreferences();
   }
 
-  void _setWaxLines(List<String> waxLines) {
-    _waxLines = waxLines;
+  void _setMultipleSelection(List<String> waxLines) {
+    _multipleSelection = waxLines;
     notifyListeners();
   }
 
-  void addWaxLine(String waxLine) {
-    if (_waxLines.contains(waxLine) == false) {
-      _waxLines.add(waxLine);
+  void addMultipleSelection(String waxLine) {
+    if (_multipleSelection.contains(waxLine) == false) {
+      _multipleSelection.add(waxLine);
       notifyListeners();
       savePreferences();
     }
   }
 
-  void removeWaxLine(String waxLine) {
-    if (_waxLines.contains(waxLine) == true) {
-      _waxLines.remove(waxLine);
+  void removeMultipleSelection(String waxLine) {
+    if (_multipleSelection.contains(waxLine) == true) {
+      _multipleSelection.remove(waxLine);
       notifyListeners();
       savePreferences();
     }
@@ -81,20 +83,19 @@ class SettingsProvider with ChangeNotifier{
 
   savePreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('units', _units);
-    prefs.setStringList('waxLines', _waxLines);
-    prefs.setInt('speedSelect', _speedSelect);
+    prefs.setString('dropdownSingleSelection', _dropdownSingleSelection);
+    prefs.setStringList('multipleSelection', _multipleSelection);
+    prefs.setInt('singleSelection', _singleSelectionChoice);
   }
 
   loadPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String units = prefs.getString('units');
-    List<String> waxLines = prefs.getStringList('waxLines');
-    int speedSelect = prefs.getInt('speedSelect');
+    String dropdownSingleSelection = prefs.getString('dropdownSingleSelection');
+    List<String> multipleSelection = prefs.getStringList('multipleSelection');
+    int singleSelection = prefs.getInt('singleSelection');
 
-    if (units != null) setUnits(units);
-    if (waxLines != null) _setWaxLines(waxLines);
-    if (speedSelect != null) setSpeedSelect(speedSelect);
+    if (dropdownSingleSelection != null) setDropdownSingleSelection(dropdownSingleSelection);
+    if (multipleSelection != null) _setMultipleSelection(multipleSelection);
+    if (singleSelection != null) setSingleSelection(singleSelection);
   }
-
 }
