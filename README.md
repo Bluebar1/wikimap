@@ -1,10 +1,15 @@
 # wiki_map
 
-A new Flutter project.
+A wikipedia search app for ios and android, made in flutter.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+In Terminal
+$ git clone <repo-link>
+$ cd wikimap
+$ flutter packages get
+$ flutter doctor
+$ flutter run
 
 A few resources to get you started if this is your first Flutter project:
 
