@@ -5,7 +5,7 @@ A wikipedia search app for ios and android, made in flutter.
 ## Getting Started
 
 In Terminal <br />
-$ git clone <repo-link> <br />
+$ git clone https://github.com/Bluebar1/wikimap.git <br />
 $ cd wikimap <br />
 $ flutter packages get <br />
 $ flutter doctor <br />
