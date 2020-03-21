@@ -4,7 +4,7 @@ A wikipedia search app for ios and android, made in flutter.
 
 ## Getting Started
 
-In Terminal
+In Terminal <br />
 $ git clone <repo-link> <br />
 $ cd wikimap <br />
 $ flutter packages get <br />
