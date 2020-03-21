@@ -18,9 +18,9 @@ class MapProvider with ChangeNotifier{
   List<int> _pageIdList;
   List<String> _titleList;
   Marker _homeMarker;
-  List<double> _mapDistanceList;
-  List<double> _mapLatitudeList;
-  List<double> _mapLongitudeList;
+  List<dynamic> _mapDistanceList;
+  List<dynamic> _mapLatitudeList;
+  List<dynamic> _mapLongitudeList;
   LatLng _startingLocation;
   String _wikiLocationUrl;
 
@@ -36,9 +36,9 @@ class MapProvider with ChangeNotifier{
   List<int> get pageIdList => _pageIdList;
   List<String> get titleList => _titleList;
   Marker get homeMarker => _homeMarker;
-  List<double> get mapDistanceList => _mapDistanceList;
-  List<double> get mapLatitudeList => _mapLatitudeList;
-  List<double> get mapLongitudeList => _mapLongitudeList;
+  List<dynamic> get mapDistanceList => _mapDistanceList;
+  List<dynamic> get mapLatitudeList => _mapLatitudeList;
+  List<dynamic> get mapLongitudeList => _mapLongitudeList;
   LatLng get startingLocation => _startingLocation;
 
   //String wikiUrlStart = Uri.encodeFull("https://en.wikipedia.org/w/api.php?" + "action=query&list=geosearch&gscoord=" + "42.730936" + "|" + " -73.761912" + "&gsradius=10000&gslimit=10&format=json");//&callback=?");
@@ -59,17 +59,17 @@ class MapProvider with ChangeNotifier{
     getMarkers();
   }
 
-  void setMapLongitudeList(List<double> mapLongitudeList) {
+  void setMapLongitudeList(List<dynamic> mapLongitudeList) {
     _mapLongitudeList = mapLongitudeList;
     notifyListeners();
   }
 
-  void setMapLatitudeList(List<double> mapLatitudeList) {
+  void setMapLatitudeList(List<dynamic> mapLatitudeList) {
     _mapLatitudeList = mapLatitudeList;
     notifyListeners();
   }
 
-  void setMapDistanceList(List<double> mapDistanceList) {
+  void setMapDistanceList(List<dynamic> mapDistanceList) {
     _mapDistanceList = mapDistanceList;
     notifyListeners();
   }
@@ -173,18 +173,18 @@ class MapProvider with ChangeNotifier{
       setPageId(_data["query"]["geosearch"][0]["pageid"]);
       List<int> _tempPageIdList = List<int>();
       List<String> _tempTitleList = List<String>();
-      List<double> _tempMapDistanceList = List<double>();
-      List<double> _tempMapLatitudeList = List<double>();
-      List<double> _tempMapLongitudeList = List<double>();
+      List<dynamic> _tempMapDistanceList = List<dynamic>();
+      List<dynamic> _tempMapLatitudeList = List<dynamic>();
+      List<dynamic> _tempMapLongitudeList = List<dynamic>();
       Marker _myMarker;
       int i = 0;
       for (var prop in _data['query']['geosearch']) {
+        double _tempLatDouble = double.parse(_data['query']['geosearch'][i]['lat'].toString());
+        double _tempLonDouble = double.parse(_data['query']['geosearch'][i]['lon'].toString());
         _myMarker = Marker(
             markerId: MarkerId(prop.hashCode.toString()),
             icon: BitmapDescriptor.defaultMarkerWithHue(100),
-            position: LatLng(
-                _data['query']['geosearch'][i]['lat'],
-                _data['query']['geosearch'][i]['lon']),
+            position: LatLng(_tempLatDouble, _tempLonDouble),
             infoWindow: InfoWindow(
                 title: _data['query']['geosearch'][i]['title']
             )

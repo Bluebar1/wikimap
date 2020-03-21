@@ -82,35 +82,6 @@ class GeoSearch extends StatelessWidget {
             ),
           ],
         )
-
     );
-
-    /*FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-        label: Text('Exit Map View'),
-        icon: Icon(Icons.directions_boat),
-      ),
-
-       */
-
   }
 }
-
-/*
-child: ChangeNotifierProvider.value(
-                          value: WikiArticleProvider(mapProvider),
-                          child: Consumer<WikiArticleProvider>(
-                            builder: (BuildContext context, WikiArticleProvider wikiProvider, Widget child){
-                              if(wikiProvider.summaryList == null) {
-                                return Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              } else {
-                                return WikiPopupPage();
-                              }
-                            },
-                          )
-                        )
- */

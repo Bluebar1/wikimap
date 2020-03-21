@@ -13,16 +13,16 @@ import 'map_provider.dart';
 class WikiArticleProvider with ChangeNotifier {
   List<String> _summaryList;
   List<String> _articleTitleList;
-  List<double> _distanceList;
-  List<double> _latitudeList;
-  List<double> _longitudeList;
+  List<dynamic> _distanceList;
+  List<dynamic> _latitudeList;
+  List<dynamic> _longitudeList;
   List<String> _imageUrlList;
 
   List<String> get summaryList => _summaryList;
   List<String> get articleTitleList => _articleTitleList;
-  List<double> get distanceList => _distanceList;
-  List<double> get latitudeList => _latitudeList;
-  List<double> get longitudeList => _longitudeList;
+  List<dynamic> get distanceList => _distanceList;
+  List<dynamic> get latitudeList => _latitudeList;
+  List<dynamic> get longitudeList => _longitudeList;
   List<String> get imageUrlList => _imageUrlList;
 
   String wikiSummaryUrl = Uri.encodeFull("https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=");
@@ -65,17 +65,17 @@ class WikiArticleProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setLongitudeList(List<double> longitudeList) {
+  void setLongitudeList(List<dynamic> longitudeList) {
     _longitudeList = longitudeList;
     notifyListeners();
   }
 
-  void setLatitudeList(List<double> latitudeList) {
+  void setLatitudeList(List<dynamic> latitudeList) {
     _latitudeList = latitudeList;
     notifyListeners();
   }
 
-  void setDistanceList(List<double> distanceList) {
+  void setDistanceList(List<dynamic> distanceList) {
     _distanceList = distanceList;
     notifyListeners();
   }
@@ -109,7 +109,7 @@ class WikiArticleProvider with ChangeNotifier {
         String _full = _tempImgUrl.toString();
         String _endString = _full.substring((_full.length)-4, _full.length);
         if(_endString.contains('svg')) {
-          _tempImageUrlString.add('https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Apple_Garage.jpg/1280px-Apple_Garage.jpg');
+          _tempImageUrlString.add('https://www.solidbackgrounds.com/images/2560x1440/2560x1440-davys-grey-solid-color-background.jpg');
         } else{
           _tempImageUrlString.add(_tempImgUrl);
         }
@@ -128,7 +128,7 @@ class WikiArticleProvider with ChangeNotifier {
 
     List<String> _tempList = List<String>();
     List<String> _tempTitleList = List<String>();
-    List<double> _tempDistanceList = List<double>();
+    List<dynamic> _tempDistanceList = List<dynamic>();
     int i = 0;
     for(int j = 1; j < provider.setOfMarkers.length; j++) {
       var sumResponse = await http.get(
