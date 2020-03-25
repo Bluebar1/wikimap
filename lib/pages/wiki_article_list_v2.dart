@@ -1,18 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
-import 'package:wiki_map/modules/animated_summary.dart';
-import 'package:wiki_map/modules/view_wiki_page_button.dart';
-import 'package:wiki_map/modules/wiki_location_module.dart';
-import 'package:wiki_map/pages/settings.dart';
-import 'package:wiki_map/providers/map_provider.dart';
-import 'package:wiki_map/providers/wiki_article_list_provider.dart';
+import 'package:wiki_map/pages/select_wiki_page.dart';
+import 'package:wiki_map/providers/select_wiki_page_provider.dart';
 import 'package:wiki_map/providers/wiki_article_provider.dart';
 
 class WikiArticleListV2 extends StatelessWidget {
-  void _viewWikiPage(BuildContext context) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => Settings()));
+  void _viewWikiPage(
+      BuildContext context, WikiArticleProvider provider, int index) {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => ChangeNotifierProvider.value(
+            value: SelectWikiPageProvider(provider, index),
+            child: Consumer<SelectWikiPageProvider>(
+              builder: (BuildContext context, SelectWikiPageProvider provider,
+                  Widget child) {
+                return SelectWikiPage();
+                // if (provider.longitude == null) {
+                //   return Center(
+                //     child: CircularProgressIndicator(),
+                //   );
+                // } else {
+                //   return WikiArticleListV2();
+                // }
+              },
+            ))));
+
+    // Navigator.of(context)
+    //     .push(MaterialPageRoute(builder: (context) => SelectWikiPage(provider, index)));
   }
 
   @override
@@ -29,7 +43,7 @@ class WikiArticleListV2 extends StatelessWidget {
         ),
         itemBuilder: (context, index) {
           return GestureDetector(
-            onTap: () => _viewWikiPage(context),
+            onTap: () => _viewWikiPage(context, wikiArticleProvider, index),
             child: FutureBuilder(builder: (context, snapshot) {
               return GridTile(
                 child: Stack(
@@ -52,42 +66,34 @@ class WikiArticleListV2 extends StatelessWidget {
                     ),
                     Center(
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10),
-                            child: Text(
-                              wikiArticleProvider.articleTitleList[index],
-                              style: Theme.of(context).textTheme.title,
-                            ),
+                          Text(
+                            wikiArticleProvider.articleTitleList[index],
+                            style: Theme.of(context).textTheme.title,
+                            textAlign: TextAlign.center,
                           ),
                           SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              Icon(
-                                Icons.map,
-                                color: Colors.deepOrange,
-                                size: 30.0,
-                              ),
-                              Icon(
-                                Icons.library_books,
-                                color: Colors.deepOrange,
-                                size: 30.0,
-                              ),
-                              Icon(
-                                Icons.add,
-                                color: Colors.deepOrange,
-                                size: 30.0,
-                              ),
-                            ],
-                          ),
                           Padding(
                             padding: const EdgeInsets.only(left: 10, right: 10),
                             child: Text(
                               wikiArticleProvider.summaryList[index],
                               maxLines: 5,
                               overflow: TextOverflow.fade,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500, fontSize: 16),
                             ),
+                          ),
+                          SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                  '${(wikiArticleProvider.distanceList[index] * 0.00062137119224).toStringAsPrecision(3)}',
+                                  style: Theme.of(context).textTheme.subhead),
+                              Text(' miles Away',
+                                  style: Theme.of(context).textTheme.subhead),
+                            ],
                           ),
                         ],
                       ),

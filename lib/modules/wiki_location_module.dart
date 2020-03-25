@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wiki_map/providers/wiki_article_provider.dart';
+import 'package:wiki_map/providers/select_wiki_page_provider.dart';
 
 class WikiLocationModule extends StatelessWidget {
-  int _index;
-
-  WikiLocationModule(int index) {
-    this._index = index;
-  }
-
   @override
   Widget build(BuildContext context) {
-    var wikiArticleProvider = Provider.of<WikiArticleProvider>(context);
+    var selectWikiPageProvider = Provider.of<SelectWikiPageProvider>(context);
     return Padding(
       padding: const EdgeInsets.only(top: 20),
       child: Row(
@@ -38,7 +32,7 @@ class WikiLocationModule extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                        '${(wikiArticleProvider.distanceList[_index] * 0.00062137119224).toStringAsPrecision(3)}',
+                        '${(selectWikiPageProvider.distance * 0.00062137119224).toStringAsPrecision(3)}',
                         style: TextStyle(
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.w600,
@@ -54,7 +48,7 @@ class WikiLocationModule extends StatelessWidget {
                     Text('Longitude: ',
                         style: Theme.of(context).textTheme.subhead),
                     Text(
-                        '${(wikiArticleProvider.latitudeList[_index]).toStringAsPrecision(9)}',
+                        '${(selectWikiPageProvider.latitude).toStringAsPrecision(9)}',
                         style: TextStyle(
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.w600,
@@ -68,7 +62,7 @@ class WikiLocationModule extends StatelessWidget {
                     Text('Longitude: ',
                         style: Theme.of(context).textTheme.subhead),
                     Text(
-                        '${(wikiArticleProvider.longitudeList[_index]).toStringAsPrecision(9)}',
+                        '${(selectWikiPageProvider.longitude).toStringAsPrecision(9)}',
                         style: TextStyle(
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.w600,
