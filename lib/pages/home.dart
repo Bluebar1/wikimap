@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wiki_map/modules/custom_button.dart';
 import 'package:wiki_map/pages/geosearch.dart';
 import 'package:wiki_map/pages/settings.dart';
+//import 'package:wiki_map/pages/wiki_article_list.dart';
+import 'package:wiki_map/pages/wiki_article_list_v2.dart';
 import 'package:wiki_map/providers/map_provider.dart';
 import 'package:wiki_map/providers/user_input_provider.dart';
-
-
-
 
 class Home extends StatelessWidget {
   @override
@@ -21,26 +19,16 @@ class Home extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.settings),
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context)=> Settings()));
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => Settings()));
             },
           ),
-
         ],
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            /*
-            Container(
-              height: 300,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                color: Color.fromRGBO(20, 80, 20, 1),
-              ),
-            ),
-
-             */
             Padding(
               padding: const EdgeInsets.only(right: 20, left: 20),
               child: Container(
@@ -63,7 +51,7 @@ class Home extends StatelessWidget {
                         ),
                         decoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText: 'Enter Latituude Here',
+                          hintText: 'Enter Latitude Here',
                         ),
                         textAlign: TextAlign.center,
                         onChanged: (String value) {
@@ -78,9 +66,7 @@ class Home extends StatelessWidget {
                       child: TextField(
                         controller: userInputProvider.longitudeController,
                         keyboardType: TextInputType.numberWithOptions(
-                          decimal: true,
-                          signed: true
-                        ),
+                            decimal: true, signed: true),
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Enter Longitude Here',
@@ -95,13 +81,18 @@ class Home extends StatelessWidget {
                     IconButton(
                       icon: Icon(Icons.print),
                       onPressed: () {
-                        userInputProvider.setStartingLocation(userInputProvider.inputLatitude, userInputProvider.inputLongitude);
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>
-                            ChangeNotifierProvider.value(
-                                value: MapProvider(userInputProvider.inputLatitude, userInputProvider.inputLongitude),
+                        userInputProvider.setStartingLocation(
+                            userInputProvider.inputLatitude,
+                            userInputProvider.inputLongitude);
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ChangeNotifierProvider.value(
+                                value: MapProvider(
+                                    userInputProvider.inputLatitude,
+                                    userInputProvider.inputLongitude),
                                 child: Consumer<MapProvider>(
-                                  builder: (BuildContext context, MapProvider provider, Widget child){
-                                    if(provider.setOfMarkers == null) {
+                                  builder: (BuildContext context,
+                                      MapProvider provider, Widget child) {
+                                    if (provider.setOfMarkers == null) {
                                       return Center(
                                         child: CircularProgressIndicator(),
                                       );
@@ -109,8 +100,7 @@ class Home extends StatelessWidget {
                                       return GeoSearch();
                                     }
                                   },
-                                )
-                            )));
+                                ))));
                       },
                     ),
                   ],

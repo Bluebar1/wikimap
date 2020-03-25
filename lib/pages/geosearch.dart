@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:wiki_map/pages/wiki_search_results.dart';
+import 'package:wiki_map/pages/wiki_article_list_v2.dart';
 import 'package:wiki_map/providers/map_provider.dart';
-import 'package:wiki_map/providers/user_input_provider.dart';
+//import 'package:wiki_map/providers/user_input_provider.dart';
 import 'package:wiki_map/providers/wiki_article_provider.dart';
 
 class GeoSearch extends StatelessWidget {
-  
   @override
   Widget build(BuildContext context) {
     var mapProvider = Provider.of<MapProvider>(context);
@@ -15,7 +14,8 @@ class GeoSearch extends StatelessWidget {
         body: GoogleMap(
           markers: mapProvider.setOfMarkers,
           mapType: MapType.normal,
-          initialCameraPosition: mapProvider.startingCameraPosition,//userInputProvider.startingLocation,
+          initialCameraPosition: mapProvider
+              .startingCameraPosition, //userInputProvider.startingLocation,
           onMapCreated: (GoogleMapController controller) {
             mapProvider.controller.complete(controller);
           },
@@ -29,40 +29,22 @@ class GeoSearch extends StatelessWidget {
                 child: FloatingActionButton.extended(
                   heroTag: "articlebutton",
                   onPressed: () {
-                    showModalBottomSheet<dynamic>(
-                        isScrollControlled: true,
-                        context: context,
-                        builder: (context) {
-                          return Container(
-                            decoration: BoxDecoration(
-                              color: Color.fromRGBO(208, 208, 208, 0),
-                              borderRadius: BorderRadius.only(
-                                topLeft: const Radius.circular(30),
-                                topRight: const Radius.circular(30),
-                              ),
-                            ),
-                            child: ChangeNotifierProvider<WikiArticleProvider>(
-                              create: (context) => WikiArticleProvider(mapProvider),
-                              child: Consumer<WikiArticleProvider>(
-                                builder: (context, wikiProvider, child){
-                                  if(wikiProvider.imageUrlList == null && wikiProvider.summaryList == null) { //TODO switch this to or '||' and get rid of Future.wait method in WikiProvider
-                                    return Container(
-                                      decoration: BoxDecoration(
-                                          color: Colors.transparent
-                                      ),
-                                      child: Center(
-                                        child: CircularProgressIndicator(),
-                                      ),
-                                    );
-                                  } else {
-                                    return WikiSearchResults();
-                                  }
-                                },
-                              ),
-                            ),
-                          );
-                        }
-                    );
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ChangeNotifierProvider.value(
+                            value: WikiArticleProvider(mapProvider),
+                            child: Consumer<WikiArticleProvider>(
+                              builder: (BuildContext context,
+                                  WikiArticleProvider provider, Widget child) {
+                                if (provider.imageUrlList == null &&
+                                    provider.summaryList == null) {
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                } else {
+                                  return WikiArticleListV2();
+                                }
+                              },
+                            ))));
                   },
                   label: Text('View Wiki Pages'),
                   icon: Icon(Icons.directions_boat),
@@ -81,7 +63,6 @@ class GeoSearch extends StatelessWidget {
               ),
             ),
           ],
-        )
-    );
+        ));
   }
 }

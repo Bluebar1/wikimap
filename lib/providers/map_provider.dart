@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as json;
 
-
-
-class MapProvider with ChangeNotifier{
+class MapProvider with ChangeNotifier {
   double _latValue;
   double _lonValue;
   Set<Marker> _newsetOfMarkers;
@@ -24,13 +22,13 @@ class MapProvider with ChangeNotifier{
   LatLng _startingLocation;
   String _wikiLocationUrl;
 
-
   double get latValue => _latValue;
   double get lonValue => _lonValue;
   Set<Marker> get setOfMarkers => _newsetOfMarkers;
   CameraPosition get startingCameraPosition => _startingCameraPosition;
   Completer<GoogleMapController> get controller => _controller;
-  String get title => _title; //this is used to send the title to the wiki article provider
+  String get title =>
+      _title; //this is used to send the title to the wiki article provider
   int get pageId => _pageId;
   int get resultsLength => _resultsLength;
   List<int> get pageIdList => _pageIdList;
@@ -42,19 +40,24 @@ class MapProvider with ChangeNotifier{
   LatLng get startingLocation => _startingLocation;
 
   //String wikiUrlStart = Uri.encodeFull("https://en.wikipedia.org/w/api.php?" + "action=query&list=geosearch&gscoord=" + "42.730936" + "|" + " -73.761912" + "&gsradius=10000&gslimit=10&format=json");//&callback=?");
-  String wikiSummaryUrl = Uri.encodeFull("https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=");
-  Map<String, String> headers = {
-    "Accept": "text/plain"
-  };
+  String wikiSummaryUrl = Uri.encodeFull(
+      "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=");
+  Map<String, String> headers = {"Accept": "text/plain"};
 
   MapProvider(double inputLatitude, double inputLongitude) {
-    _wikiLocationUrl = Uri.encodeFull("https://en.wikipedia.org/w/api.php?" + "action=query&list=geosearch&gscoord=" + inputLatitude.toString() + "|" + inputLongitude.toString() + "&gsradius=10000&gslimit=10&format=json");
-    print("==================================MAP PROVIDER CONSTRUCTOR CALLED====================================="+ _wikiLocationUrl.toString());
+    _wikiLocationUrl = Uri.encodeFull("https://en.wikipedia.org/w/api.php?" +
+        "action=query&list=geosearch&gscoord=" +
+        inputLatitude.toString() +
+        "|" +
+        inputLongitude.toString() +
+        "&gsradius=10000&gslimit=10&format=json");
+    print(
+        "==================================MAP PROVIDER CONSTRUCTOR CALLED=====================================" +
+            _wikiLocationUrl.toString());
     _startingLocation = LatLng(inputLatitude, inputLongitude);
-    _startingCameraPosition = CameraPosition(
-        target: _startingLocation,
-        zoom: 13//14.4746,
-    );
+    _startingCameraPosition =
+        CameraPosition(target: _startingLocation, zoom: 13 //14.4746,
+            );
     _controller = Completer();
     getMarkers();
   }
@@ -80,10 +83,10 @@ class MapProvider with ChangeNotifier{
   }
 
   void setLatValue(var latValue) {
-    if(!(latValue.runtimeType == int)) { //translation: if the latValue is not an integer
+    if (!(latValue.runtimeType == int)) {
+      //translation: if the latValue is not an integer
       _latValue = latValue;
-    }
-    else {
+    } else {
       double _tempLat = double.parse(latValue.toString());
       _latValue = _tempLat;
     }
@@ -102,10 +105,9 @@ class MapProvider with ChangeNotifier{
   }
 
   void setLonValue(var lonValue) {
-    if(!(lonValue.runtimeType == int)) {
+    if (!(lonValue.runtimeType == int)) {
       _lonValue = lonValue;
-    }
-    else {
+    } else {
       double _tempLon = double.parse(lonValue.toString());
       _lonValue = _tempLon;
     }
@@ -132,13 +134,12 @@ class MapProvider with ChangeNotifier{
     print('START OF SUMMARY');
     print(title);
     print(pageID);
-    var sumResponse = await http.get(
-        wikiSummaryUrl + Uri.encodeFull(title),
-        headers: headers
-    );
+    var sumResponse = await http.get(wikiSummaryUrl + Uri.encodeFull(title),
+        headers: headers);
     String jsonSummaryString = sumResponse.body.toString();
     var _sumData = json.jsonDecode(jsonSummaryString);
-    var sumString = _sumData['query']['pages'][Uri.encodeFull(pageID.toString())]['extract'];//[pageID]['extract'];
+    var sumString = _sumData['query']['pages']
+        [Uri.encodeFull(pageID.toString())]['extract']; //[pageID]['extract'];
     print('SUMMARY PRINT OUT');
     print(sumString);
     return sumString;
@@ -150,23 +151,18 @@ class MapProvider with ChangeNotifier{
         markerId: MarkerId('0'),
         icon: BitmapDescriptor.defaultMarkerWithHue(50),
         position: _startingLocation,
-        infoWindow: InfoWindow(
-            title: 'STARTING POINT'
-        )
-    );
+        infoWindow: InfoWindow(title: 'STARTING POINT'));
     _markers.add(_tempHomeMarker);
 
-    var response = await http.get(
-        _wikiLocationUrl,
-        headers: headers
-    );
+    var response = await http.get(_wikiLocationUrl, headers: headers);
     String jsonsDataString = response.body
         .toString(); // toString of Response's body is assigned to jsonDataString
     var _data = json.jsonDecode(jsonsDataString);
-    print('VAR DATA CALLED HERE======================================='+ _data.toString());
+    print('VAR DATA CALLED HERE=======================================' +
+        _data.toString());
     print(_data["query"]["geosearch"][0]["lat"].runtimeType);
     print(_data["query"]["geosearch"][0]["lat"].toString());
-    if(!_data["query"]["geosearch"].isEmpty) {
+    if (!_data["query"]["geosearch"].isEmpty) {
       setLatValue(_data["query"]["geosearch"][0]["lat"]);
       setLonValue(_data["query"]["geosearch"][0]["lon"]);
       setTitle(_data["query"]["geosearch"][0]["title"]);
@@ -179,16 +175,16 @@ class MapProvider with ChangeNotifier{
       Marker _myMarker;
       int i = 0;
       for (var prop in _data['query']['geosearch']) {
-        double _tempLatDouble = double.parse(_data['query']['geosearch'][i]['lat'].toString());
-        double _tempLonDouble = double.parse(_data['query']['geosearch'][i]['lon'].toString());
+        double _tempLatDouble =
+            double.parse(_data['query']['geosearch'][i]['lat'].toString());
+        double _tempLonDouble =
+            double.parse(_data['query']['geosearch'][i]['lon'].toString());
         _myMarker = Marker(
             markerId: MarkerId(prop.hashCode.toString()),
             icon: BitmapDescriptor.defaultMarkerWithHue(100),
             position: LatLng(_tempLatDouble, _tempLonDouble),
-            infoWindow: InfoWindow(
-                title: _data['query']['geosearch'][i]['title']
-            )
-        );
+            infoWindow:
+                InfoWindow(title: _data['query']['geosearch'][i]['title']));
         _markers.add(_myMarker);
         _tempPageIdList.add(_data['query']['geosearch'][i]['pageid']);
         _tempTitleList.add(_data['query']['geosearch'][i]['title']);

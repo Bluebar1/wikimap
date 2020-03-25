@@ -4,8 +4,8 @@ import 'package:wiki_map/pages/home.dart';
 import 'package:wiki_map/providers/settings_provider.dart';
 import 'package:wiki_map/providers/theme_provider.dart';
 import 'package:wiki_map/providers/user_input_provider.dart';
-import 'package:wiki_map/style.dart';
-
+import 'package:wiki_map/providers/wiki_article_list_provider.dart';
+//import 'package:wiki_map/style.dart';
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -14,8 +14,12 @@ class MyApp extends StatelessWidget {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<SettingsProvider>(create: (_) => SettingsProvider(themeProvider)),
-        ChangeNotifierProvider<UserInputProvider>(create: (_) => UserInputProvider())
+        ChangeNotifierProvider<SettingsProvider>(
+            create: (_) => SettingsProvider(themeProvider)),
+        ChangeNotifierProvider<UserInputProvider>(
+            create: (_) => UserInputProvider()),
+        // ChangeNotifierProvider<WikiArticleListProvider>(
+        //     create: (_) => WikiArticleListProvider())
       ],
       child: MaterialApp(
         title: 'Wax App',
@@ -25,4 +29,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
