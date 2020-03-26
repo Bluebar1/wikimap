@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wiki_map/pages/home.dart';
+import 'package:wiki_map/providers/saved_pages_provider.dart';
 import 'package:wiki_map/providers/settings_provider.dart';
 import 'package:wiki_map/providers/theme_provider.dart';
 import 'package:wiki_map/providers/user_input_provider.dart';
@@ -18,6 +19,8 @@ class MyApp extends StatelessWidget {
             create: (_) => SettingsProvider(themeProvider)),
         ChangeNotifierProvider<UserInputProvider>(
             create: (_) => UserInputProvider()),
+        ChangeNotifierProvider<SavedPagesProvider>(
+            create: (_) => SavedPagesProvider())
         // ChangeNotifierProvider<WikiArticleListProvider>(
         //     create: (_) => WikiArticleListProvider())
       ],

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wiki_map/pages/geosearch.dart';
+import 'package:wiki_map/pages/saved_pages.dart';
 import 'package:wiki_map/pages/settings.dart';
-//import 'package:wiki_map/pages/wiki_article_list.dart';
-import 'package:wiki_map/pages/wiki_article_list_v2.dart';
 import 'package:wiki_map/providers/map_provider.dart';
 import 'package:wiki_map/providers/user_input_provider.dart';
 
@@ -21,6 +20,13 @@ class Home extends StatelessWidget {
             onPressed: () {
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) => Settings()));
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.arrow_right),
+            onPressed: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => SavedPages()));
             },
           ),
         ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wiki_map/modules/save_page_button.dart';
 import 'package:wiki_map/modules/view_wiki_page_button.dart';
 import 'package:wiki_map/providers/theme_provider.dart';
 
@@ -26,10 +27,10 @@ class WikiSelectPageButtons extends StatelessWidget {
             nextPage: Text('yo'),
             width: 60,
           ),
-          ViewWikiPageButton(
+          SavePageButton(
             color: Colors.red,
             iconSize: 30,
-            icon: Icons.accessibility_new,
+            icon: Icons.add,
             nextPage: Text('yo'),
             width: 60,
           ),

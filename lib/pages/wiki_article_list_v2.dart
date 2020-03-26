@@ -15,18 +15,8 @@ class WikiArticleListV2 extends StatelessWidget {
               builder: (BuildContext context, SelectWikiPageProvider provider,
                   Widget child) {
                 return SelectWikiPage();
-                // if (provider.longitude == null) {
-                //   return Center(
-                //     child: CircularProgressIndicator(),
-                //   );
-                // } else {
-                //   return WikiArticleListV2();
-                // }
               },
             ))));
-
-    // Navigator.of(context)
-    //     .push(MaterialPageRoute(builder: (context) => SelectWikiPage(provider, index)));
   }
 
   @override
@@ -81,7 +71,7 @@ class WikiArticleListV2 extends StatelessWidget {
                               maxLines: 5,
                               overflow: TextOverflow.fade,
                               style: TextStyle(
-                                  fontWeight: FontWeight.w500, fontSize: 16),
+                                  fontWeight: FontWeight.w500, fontSize: 16.0),
                             ),
                           ),
                           SizedBox(height: 10),
