@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wiki_map/pages/dynamic_geosearch.dart';
 import 'package:wiki_map/pages/geosearch.dart';
 import 'package:wiki_map/pages/saved_pages.dart';
 import 'package:wiki_map/pages/settings.dart';
+import 'package:wiki_map/providers/geo_locator_provider.dart';
 import 'package:wiki_map/providers/map_provider.dart';
 import 'package:wiki_map/providers/user_input_provider.dart';
 
@@ -10,6 +12,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var userInputProvider = Provider.of<UserInputProvider>(context);
+    //var geoLocatorProvider = Provider.of<GeoLocatorProvider>(context);
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
@@ -104,6 +107,45 @@ class Home extends StatelessWidget {
                                       );
                                     } else {
                                       return GeoSearch();
+                                    }
+                                  },
+                                ))));
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.add_alarm),
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ChangeNotifierProvider.value(
+                                value: GeoLocatorProvider(),
+                                child: Consumer<GeoLocatorProvider>(
+                                  builder: (BuildContext context,
+                                      GeoLocatorProvider provider,
+                                      Widget child) {
+                                    if (provider.position == null) {
+                                      return Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    } else {
+                                      return ChangeNotifierProvider.value(
+                                          value: MapProvider(
+                                              provider.position.latitude,
+                                              provider.position.longitude),
+                                          child: Consumer<MapProvider>(
+                                            builder: (BuildContext context,
+                                                MapProvider provider,
+                                                Widget child) {
+                                              if (provider.setOfMarkers ==
+                                                  null) {
+                                                return Center(
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                );
+                                              } else {
+                                                return DynamicGeoSearch();
+                                              }
+                                            },
+                                          ));
                                     }
                                   },
                                 ))));

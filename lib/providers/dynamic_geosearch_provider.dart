@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as json;
 
-class MapProvider with ChangeNotifier {
+class DynamicGeoSearchProvider with ChangeNotifier {
   double _latValue;
   double _lonValue;
   Set<Marker> _newsetOfMarkers;
@@ -44,31 +44,20 @@ class MapProvider with ChangeNotifier {
       "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=");
   Map<String, String> headers = {"Accept": "text/plain"};
 
-  MapProvider(double inputLatitude, double inputLongitude) {
+  DynamicGeoSearchProvider(double inputLatitude, double inputLongitude) {
     _wikiLocationUrl = Uri.encodeFull("https://en.wikipedia.org/w/api.php?" +
         "action=query&list=geosearch&gscoord=" +
         inputLatitude.toString() +
         "|" +
         inputLongitude.toString() +
         "&gsradius=10000&gslimit=10&format=json");
-    print(
-        "==================================MAP PROVIDER CONSTRUCTOR CALLED=====================================" +
-            _wikiLocationUrl.toString());
+
     _startingLocation = LatLng(inputLatitude, inputLongitude);
     _startingCameraPosition =
         CameraPosition(target: _startingLocation, zoom: 13 //14.4746,
             );
     _controller = Completer();
     getMarkers();
-  }
-  void setStartingLocation(LatLng startingLocation) {
-    print('SET STARTING LOCATION CALLED');
-    _startingLocation = startingLocation;
-  }
-
-  void removeMarkers() {
-    _newsetOfMarkers.clear();
-    notifyListeners();
   }
 
   void setMapLongitudeList(List<dynamic> mapLongitudeList) {
@@ -92,8 +81,7 @@ class MapProvider with ChangeNotifier {
   }
 
   void setLatValue(var latValue) {
-    if (!(latValue.runtimeType == int)) {
-      //translation: if the latValue is not an integer
+    if (latValue.runtimeType != int) {
       _latValue = latValue;
     } else {
       double _tempLat = double.parse(latValue.toString());
@@ -164,75 +152,6 @@ class MapProvider with ChangeNotifier {
     _markers.add(_tempHomeMarker);
 
     var response = await http.get(_wikiLocationUrl, headers: headers);
-    String jsonsDataString = response.body
-        .toString(); // toString of Response's body is assigned to jsonDataString
-    var _data = json.jsonDecode(jsonsDataString);
-    print('VAR DATA CALLED HERE=======================================' +
-        _data.toString());
-    print(_data["query"]["geosearch"][0]["lat"].runtimeType);
-    print(_data["query"]["geosearch"][0]["lat"].toString());
-    if (!_data["query"]["geosearch"].isEmpty) {
-      setLatValue(_data["query"]["geosearch"][0]["lat"]);
-      setLonValue(_data["query"]["geosearch"][0]["lon"]);
-      setTitle(_data["query"]["geosearch"][0]["title"]);
-      setPageId(_data["query"]["geosearch"][0]["pageid"]);
-      List<int> _tempPageIdList = List<int>();
-      List<String> _tempTitleList = List<String>();
-      List<dynamic> _tempMapDistanceList = List<dynamic>();
-      List<dynamic> _tempMapLatitudeList = List<dynamic>();
-      List<dynamic> _tempMapLongitudeList = List<dynamic>();
-      Marker _myMarker;
-      int i = 0;
-      for (var prop in _data['query']['geosearch']) {
-        double _tempLatDouble =
-            double.parse(_data['query']['geosearch'][i]['lat'].toString());
-        double _tempLonDouble =
-            double.parse(_data['query']['geosearch'][i]['lon'].toString());
-        _myMarker = Marker(
-            markerId: MarkerId(prop.hashCode.toString()),
-            icon: BitmapDescriptor.defaultMarkerWithHue(100),
-            position: LatLng(_tempLatDouble, _tempLonDouble),
-            infoWindow:
-                InfoWindow(title: _data['query']['geosearch'][i]['title']));
-        _markers.add(_myMarker);
-        _tempPageIdList.add(_data['query']['geosearch'][i]['pageid']);
-        _tempTitleList.add(_data['query']['geosearch'][i]['title']);
-        _tempMapDistanceList.add(_data['query']['geosearch'][i]['dist']);
-        _tempMapLatitudeList.add(_data['query']['geosearch'][i]['lat']);
-        _tempMapLongitudeList.add(_data['query']['geosearch'][i]['lon']);
-        i++;
-      }
-      Set<Marker> _setOfMarkers = Set.of(_markers);
-      setMapLatitudeList(_tempMapLatitudeList);
-      setMapLongitudeList(_tempMapLongitudeList);
-      setPageIdList(_tempPageIdList);
-      setTitleList(_tempTitleList);
-      setMapDistanceList(_tempMapDistanceList);
-      setMarkerSet(_setOfMarkers);
-    } else {
-      Set<Marker> _setOfMarkers = Set.of(_markers);
-      setMarkerSet(_setOfMarkers);
-      //TODO add more exception cases
-    }
-  }
-
-  getDynamicMarkers(LatLng location) async {
-    String _wikiLocationUrlDynamic = Uri.encodeFull(
-        "https://en.wikipedia.org/w/api.php?" +
-            "action=query&list=geosearch&gscoord=" +
-            location.latitude.toString() +
-            "|" +
-            location.longitude.toString() +
-            "&gsradius=10000&gslimit=10&format=json");
-    List<Marker> _markers = List<Marker>();
-    Marker _tempHomeMarker = Marker(
-        markerId: MarkerId('0'),
-        icon: BitmapDescriptor.defaultMarkerWithHue(50),
-        position: _startingLocation,
-        infoWindow: InfoWindow(title: 'STARTING POINT'));
-    _markers.add(_tempHomeMarker);
-
-    var response = await http.get(_wikiLocationUrlDynamic, headers: headers); 
     String jsonsDataString = response.body
         .toString(); // toString of Response's body is assigned to jsonDataString
     var _data = json.jsonDecode(jsonsDataString);

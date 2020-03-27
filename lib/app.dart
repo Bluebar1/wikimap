@@ -5,7 +5,6 @@ import 'package:wiki_map/providers/saved_pages_provider.dart';
 import 'package:wiki_map/providers/settings_provider.dart';
 import 'package:wiki_map/providers/theme_provider.dart';
 import 'package:wiki_map/providers/user_input_provider.dart';
-import 'package:wiki_map/providers/wiki_article_list_provider.dart';
 //import 'package:wiki_map/style.dart';
 
 class MyApp extends StatelessWidget {
@@ -20,7 +19,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<UserInputProvider>(
             create: (_) => UserInputProvider()),
         ChangeNotifierProvider<SavedPagesProvider>(
-            create: (_) => SavedPagesProvider())
+            create: (_) => SavedPagesProvider()),
+
         // ChangeNotifierProvider<WikiArticleListProvider>(
         //     create: (_) => WikiArticleListProvider())
       ],
