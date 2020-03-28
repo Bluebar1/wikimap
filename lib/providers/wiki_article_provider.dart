@@ -24,6 +24,7 @@ class WikiArticleProvider with ChangeNotifier {
   List<dynamic> _latitudeList;
   List<dynamic> _longitudeList;
   List<String> _imageUrlList;
+  List<int> _pageIdList;
 
   //getter methods for accessing in widget tree
   List<String> get summaryList => _summaryList;
@@ -32,6 +33,7 @@ class WikiArticleProvider with ChangeNotifier {
   List<dynamic> get latitudeList => _latitudeList;
   List<dynamic> get longitudeList => _longitudeList;
   List<String> get imageUrlList => _imageUrlList;
+  List<int> get pageIdList => _pageIdList;
 
   //links for http get requests
   String wikiSummaryUrl = Uri.encodeFull(
@@ -50,6 +52,7 @@ class WikiArticleProvider with ChangeNotifier {
     _imageUrlList = null;
     _latitudeList = provider.mapLatitudeList;
     _longitudeList = provider.mapLongitudeList;
+    _pageIdList = provider.pageIdList;
     print('SUMMARY LIST PRINTOUT FROM CONSTRUCTOR ' + _summaryList.toString());
     getAndSetWikiInfo(provider);
   }

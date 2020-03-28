@@ -20,6 +20,7 @@ class SelectWikiPageProvider with ChangeNotifier {
   dynamic _latitude;
   dynamic _longitude;
   int _index;
+  int _pageId;
 
   //getter methods for accessing in widget tree
   String get summary => _summary;
@@ -29,6 +30,7 @@ class SelectWikiPageProvider with ChangeNotifier {
   dynamic get latitude => _latitude;
   dynamic get longitude => _longitude;
   int get index => _index;
+  int get pageId => _pageId;
 
   //class constructor, takes MapProvider as parameter because it contains information needed in this class
   SelectWikiPageProvider(WikiArticleProvider provider, int index) {
@@ -39,6 +41,7 @@ class SelectWikiPageProvider with ChangeNotifier {
     _latitude = null;
     _longitude = null;
     _index = index;
+    _pageId = provider.pageIdList[_index];
     setPageData(provider, index);
   }
 

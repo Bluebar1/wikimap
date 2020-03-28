@@ -7,7 +7,6 @@ import '../providers/settings_provider.dart';
 class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     var settingsProvider = Provider.of<SettingsProvider>(context);
 
     return Scaffold(
@@ -51,26 +50,35 @@ class Settings extends StatelessWidget {
                     children: <Widget>[
                       FilterChip(
                         label: Text('Option 1',
-                            style: TextStyle(color: Theme.of(context).accentColor)),
-                        selected: (settingsProvider.multipleSelection.contains('Option 1')) ? true : false,
+                            style: TextStyle(
+                                color: Theme.of(context).accentColor)),
+                        selected: (settingsProvider.multipleSelection
+                                .contains('Option 1'))
+                            ? true
+                            : false,
                         onSelected: (bool value) {
-                          if (value == true){
+                          if (value == true) {
                             settingsProvider.addMultipleSelection('Option 1');
                           } else {
-                            settingsProvider.removeMultipleSelection('Option 1');
+                            settingsProvider
+                                .removeMultipleSelection('Option 1');
                           }
                         },
                       ),
                       FilterChip(
                         label: Text('Option 2',
-                            style:
-                            TextStyle(color: Theme.of(context).accentColor)),
-                        selected: (settingsProvider.multipleSelection.contains('Option 2')) ? true : false,
+                            style: TextStyle(
+                                color: Theme.of(context).accentColor)),
+                        selected: (settingsProvider.multipleSelection
+                                .contains('Option 2'))
+                            ? true
+                            : false,
                         onSelected: (bool value) {
-                          if (value == true){
+                          if (value == true) {
                             settingsProvider.addMultipleSelection('Option 2');
                           } else {
-                            settingsProvider.removeMultipleSelection('Option 2');
+                            settingsProvider
+                                .removeMultipleSelection('Option 2');
                           }
                         },
                       ),
@@ -84,21 +92,25 @@ class Settings extends StatelessWidget {
             spacing: 20.0,
             runSpacing: 20.0,
             children: List<Widget>.generate(
-              3, (int index) {
-              return ChoiceChip(
-                label: Text('${settingsProvider.speedString[index]}'),
-                selected: settingsProvider.singleSelection == index,
-                onSelected: (bool selected) {
-                  selected ? settingsProvider.setSingleSelection(index) : settingsProvider.setSingleSelection(null);
-                },
-              );
-            },
+              3,
+              (int index) {
+                return ChoiceChip(
+                  label: Text('${settingsProvider.speedString[index]}'),
+                  selected: settingsProvider.singleSelection == index,
+                  onSelected: (bool selected) {
+                    selected
+                        ? settingsProvider.setSingleSelection(index)
+                        : settingsProvider.setSingleSelection(null);
+                  },
+                );
+              },
             ).toList(),
           ),
           RaisedButton(
             elevation: 3.0,
             onPressed: () {
-              var themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+              var themeProvider =
+                  Provider.of<ThemeProvider>(context, listen: false);
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
@@ -111,17 +123,16 @@ class Settings extends StatelessWidget {
                     content: SingleChildScrollView(
                       child: SlidePicker(
                         pickerColor: settingsProvider.themeColor,
-                        onColorChanged:(Color color) {
+                        onColorChanged: (Color color) {
                           settingsProvider.setThemeColor(color);
                           themeProvider.setPrimaryColor(color);
-                          },
+                        },
                         paletteType: PaletteType.rgb,
                         enableAlpha: false,
                         displayThumbColor: true,
                         showLabel: false,
                         showIndicator: true,
-                        indicatorBorderRadius:
-                        const BorderRadius.vertical(
+                        indicatorBorderRadius: const BorderRadius.vertical(
                           top: const Radius.circular(25.0),
                         ),
                       ),
@@ -139,7 +150,8 @@ class Settings extends StatelessWidget {
           RaisedButton(
             elevation: 3.0,
             onPressed: () {
-              var themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+              var themeProvider =
+                  Provider.of<ThemeProvider>(context, listen: false);
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
@@ -152,7 +164,7 @@ class Settings extends StatelessWidget {
                     content: SingleChildScrollView(
                       child: SlidePicker(
                         pickerColor: settingsProvider.accentColor,
-                        onColorChanged:(Color color) {
+                        onColorChanged: (Color color) {
                           settingsProvider.setAccentColor(color);
                           themeProvider.setBackgroundColor(color);
                         },
@@ -161,8 +173,7 @@ class Settings extends StatelessWidget {
                         displayThumbColor: true,
                         showLabel: false,
                         showIndicator: true,
-                        indicatorBorderRadius:
-                        const BorderRadius.vertical(
+                        indicatorBorderRadius: const BorderRadius.vertical(
                           top: const Radius.circular(25.0),
                         ),
                       ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wiki_map/providers/saved_pages_provider.dart';
+import 'package:wiki_map/providers/view_saved_page_provider.dart';
+import 'package:wiki_map/pages/view_saved_page.dart';
 /*
 Created NB 3/25/2020
 
@@ -17,11 +19,39 @@ GestureDetector onTap go to SelectWikiPage
 */
 
 class SavedPages extends StatelessWidget {
+  void _viewSavedPage(BuildContext context, String title, int pageId) {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => ChangeNotifierProvider.value(
+            value: ViewSavedPageProvider(title, pageId),
+            child: Consumer<ViewSavedPageProvider>(
+              builder: (BuildContext context, ViewSavedPageProvider provider,
+                  Widget child) {
+                if (provider.imageUrl == null) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else {
+                  return ViewSavedPage();
+                }
+              },
+            ))));
+  }
+
   @override
   Widget build(BuildContext context) {
     var savedPagesProvider = Provider.of<SavedPagesProvider>(context);
     return Scaffold(
-      appBar: AppBar(title: Text('Saved Pages')),
+      appBar: AppBar(
+        title: Text('Saved Pages'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.add_alert),
+            onPressed: () {
+              savedPagesProvider.deleteAllPages();
+            },
+          ),
+        ],
+      ),
       body: ListView.builder(
           //physics: new NeverScrollableScrollPhysics(),
           //controller: scrollController,
@@ -29,8 +59,17 @@ class SavedPages extends StatelessWidget {
           itemCount: savedPagesProvider.savedPageTitles.length,
           itemBuilder: (BuildContext context, int index) {
             return GestureDetector(
-              onTap: () => print(
-                  'tap called on ${savedPagesProvider.savedPageTitles[index]}'),
+              onTap: () {
+                print(
+                    'tap called on ${savedPagesProvider.savedPageTitles[index]}');
+                int _tempId =
+                    int.parse(savedPagesProvider.savedWikiPageIds[index]);
+                _viewSavedPage(
+                  context,
+                  savedPagesProvider.savedPageTitles[index],
+                  _tempId,
+                );
+              },
               child: Container(
                   height: 40,
                   decoration: BoxDecoration(

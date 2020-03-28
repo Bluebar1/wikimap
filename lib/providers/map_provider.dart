@@ -139,6 +139,13 @@ class MapProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  String getPageIdByTitle(String title) {
+    print('MAP PROVIDER GET PAGE ID BY TITLE CALLED');
+    int index = titleList.indexOf(title);
+    print(index);
+    return pageIdList[index].toString();
+  }
+
   Future<String> getSummary(String title, int pageID) async {
     print('START OF SUMMARY');
     print(title);
@@ -232,7 +239,7 @@ class MapProvider with ChangeNotifier {
         infoWindow: InfoWindow(title: 'STARTING POINT'));
     _markers.add(_tempHomeMarker);
 
-    var response = await http.get(_wikiLocationUrlDynamic, headers: headers); 
+    var response = await http.get(_wikiLocationUrlDynamic, headers: headers);
     String jsonsDataString = response.body
         .toString(); // toString of Response's body is assigned to jsonDataString
     var _data = json.jsonDecode(jsonsDataString);

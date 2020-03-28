@@ -39,14 +39,14 @@ class WikiLocationModule extends StatelessWidget {
                             fontSize: 12,
                             color: Color.fromRGBO(192, 192, 192, 0.8))),
                     Text(' miles Away',
-                        style: Theme.of(context).textTheme.subhead),
+                        style: Theme.of(context).textTheme.subtitle1),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text('Longitude: ',
-                        style: Theme.of(context).textTheme.subhead),
+                        style: Theme.of(context).textTheme.subtitle1),
                     Text(
                         '${(selectWikiPageProvider.latitude).toStringAsPrecision(9)}',
                         style: TextStyle(
@@ -60,7 +60,7 @@ class WikiLocationModule extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text('Longitude: ',
-                        style: Theme.of(context).textTheme.subhead),
+                        style: Theme.of(context).textTheme.subtitle1),
                     Text(
                         '${(selectWikiPageProvider.longitude).toStringAsPrecision(9)}',
                         style: TextStyle(

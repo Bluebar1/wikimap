@@ -15,7 +15,8 @@ class AnimatedSummary extends StatefulWidget {
   _AnimatedSummary createState() => new _AnimatedSummary();
 }
 
-class _AnimatedSummary extends State<AnimatedSummary> with TickerProviderStateMixin<AnimatedSummary> {
+class _AnimatedSummary extends State<AnimatedSummary>
+    with TickerProviderStateMixin<AnimatedSummary> {
   @override
   Widget build(BuildContext context) {
     return Column(children: <Widget>[
@@ -26,32 +27,28 @@ class _AnimatedSummary extends State<AnimatedSummary> with TickerProviderStateMi
               constraints: widget.isExpanded
                   ? new BoxConstraints()
                   : new BoxConstraints(maxHeight: 73.0),
-              child: new Text(
-                  widget.text,
+              child: new Text(widget.text,
                   softWrap: true,
                   overflow: TextOverflow.fade,
-                  style: Theme.of(context).textTheme.subhead))),
+                  style: Theme.of(context).textTheme.subtitle1))),
       widget.isExpanded
           ? Align(
-        alignment: Alignment.topRight,
-        child: FlatButton(
-            child: Text(
-                'Less',
-                style: Theme.of(context).textTheme.subtitle
-            ),
-            onPressed: () => setState(() => widget.isExpanded = false)),
-      )//new ConstrainedBox(constraints: new BoxConstraints())
+              alignment: Alignment.topRight,
+              child: FlatButton(
+                  child: Text('Less',
+                      style: Theme.of(context).textTheme.subtitle2),
+                  onPressed: () => setState(() => widget.isExpanded = false)),
+            ) //new ConstrainedBox(constraints: new BoxConstraints())
           : (widget.text.length > 250)
-          ? Align(
-        alignment: Alignment.topRight,
-        child: FlatButton(
-            child: Text(
-                'View More',
-                style: Theme.of(context).textTheme.subtitle
-            ),
-            onPressed: () => setState(() => widget.isExpanded = true)),
-      )
-          : Container()
+              ? Align(
+                  alignment: Alignment.topRight,
+                  child: FlatButton(
+                      child: Text('View More',
+                          style: Theme.of(context).textTheme.subtitle2),
+                      onPressed: () =>
+                          setState(() => widget.isExpanded = true)),
+                )
+              : Container()
     ]);
   }
 }

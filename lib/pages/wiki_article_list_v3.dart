@@ -5,7 +5,7 @@ import 'package:wiki_map/pages/select_wiki_page.dart';
 import 'package:wiki_map/providers/select_wiki_page_provider.dart';
 import 'package:wiki_map/providers/wiki_article_provider.dart';
 
-class WikiArticleListV2 extends StatelessWidget {
+class WikiArticleListV3 extends StatelessWidget {
   void _viewWikiPage(
       BuildContext context, WikiArticleProvider provider, int index) {
     Navigator.of(context).push(MaterialPageRoute(

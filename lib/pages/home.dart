@@ -112,44 +112,59 @@ class Home extends StatelessWidget {
                                 ))));
                       },
                     ),
-                    IconButton(
-                      icon: Icon(Icons.add_alarm),
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ChangeNotifierProvider.value(
-                                value: GeoLocatorProvider(),
-                                child: Consumer<GeoLocatorProvider>(
-                                  builder: (BuildContext context,
-                                      GeoLocatorProvider provider,
-                                      Widget child) {
-                                    if (provider.position == null) {
-                                      return Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    } else {
-                                      return ChangeNotifierProvider.value(
-                                          value: MapProvider(
-                                              provider.position.latitude,
-                                              provider.position.longitude),
-                                          child: Consumer<MapProvider>(
-                                            builder: (BuildContext context,
-                                                MapProvider provider,
-                                                Widget child) {
-                                              if (provider.setOfMarkers ==
-                                                  null) {
-                                                return Center(
-                                                  child:
-                                                      CircularProgressIndicator(),
-                                                );
-                                              } else {
-                                                return DynamicGeoSearch();
-                                              }
-                                            },
-                                          ));
-                                    }
-                                  },
-                                ))));
-                      },
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        IconButton(
+                          icon: Icon(Icons.search),
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                    ChangeNotifierProvider.value(
+                                        value: GeoLocatorProvider(),
+                                        child: Consumer<GeoLocatorProvider>(
+                                          builder: (BuildContext context,
+                                              GeoLocatorProvider provider,
+                                              Widget child) {
+                                            if (provider.position == null) {
+                                              return Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              );
+                                            } else {
+                                              return ChangeNotifierProvider
+                                                  .value(
+                                                      value: MapProvider(
+                                                          provider.position
+                                                              .latitude,
+                                                          provider.position
+                                                              .longitude),
+                                                      child:
+                                                          Consumer<MapProvider>(
+                                                        builder: (BuildContext
+                                                                context,
+                                                            MapProvider
+                                                                provider,
+                                                            Widget child) {
+                                                          if (provider
+                                                                  .setOfMarkers ==
+                                                              null) {
+                                                            return Center(
+                                                              child:
+                                                                  CircularProgressIndicator(),
+                                                            );
+                                                          } else {
+                                                            return DynamicGeoSearch();
+                                                          }
+                                                        },
+                                                      ));
+                                            }
+                                          },
+                                        ))));
+                          },
+                        ),
+                        Text('Search My Current Location')
+                      ],
                     ),
                   ],
                 ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wiki_map/models/saved_page.dart';
 import 'package:wiki_map/providers/theme_provider.dart';
 
 /*
@@ -23,6 +22,22 @@ class SavedPagesProvider with ChangeNotifier {
     _savedWikiPageIds.add('983298');
     print('saved pages list set to ' + _savedPageTitles.toString());
     loadPreferences();
+  }
+
+  deleteSavedPage(int index) {
+    _savedPageTitles.removeAt(index);
+    _savedWikiPageIds.removeAt(index);
+    notifyListeners();
+    savePreferences();
+  }
+
+  deleteAllPages() {
+    _savedPageTitles.clear();
+    _savedWikiPageIds.clear();
+    _savedPageTitles.add('Apple Park');
+    _savedWikiPageIds.add('40780688');
+    notifyListeners();
+    savePreferences();
   }
 
   addSavedPage(String title) {

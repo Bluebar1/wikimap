@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:wiki_map/pages/wiki_article_list_v2.dart';
+import 'package:wiki_map/pages/wiki_article_list_v3.dart';
 import 'package:wiki_map/providers/map_provider.dart';
-//import 'package:wiki_map/providers/user_input_provider.dart';
 import 'package:wiki_map/providers/wiki_article_provider.dart';
 
 class GeoSearch extends StatelessWidget {
@@ -41,7 +40,7 @@ class GeoSearch extends StatelessWidget {
                                     child: CircularProgressIndicator(),
                                   );
                                 } else {
-                                  return WikiArticleListV2();
+                                  return WikiArticleListV3();
                                 }
                               },
                             ))));

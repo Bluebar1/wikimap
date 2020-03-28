@@ -3,15 +3,14 @@ import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:wiki_map/modules/wiki_location_module.dart';
 import 'package:wiki_map/modules/wiki_select_page_buttons.dart';
-import 'package:wiki_map/providers/map_provider.dart';
-import 'package:wiki_map/providers/select_wiki_page_provider.dart';
+import 'package:wiki_map/providers/view_saved_page_provider.dart';
 import 'package:wiki_map/providers/theme_provider.dart';
 
-class SelectWikiPage extends StatelessWidget {
+class ViewSavedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var themeProvider = Provider.of<ThemeProvider>(context);
-    var selectWikiPageProvider = Provider.of<SelectWikiPageProvider>(context);
+    var viewSavedPageProvider = Provider.of<ViewSavedPageProvider>(context);
     return Scaffold(
         appBar: AppBar(
           title: Text('Select Wiki Page'),
@@ -26,7 +25,7 @@ class SelectWikiPage extends StatelessWidget {
               height: 300,
               child: FadeInImage.memoryNetwork(
                 placeholder: kTransparentImage,
-                image: selectWikiPageProvider.imageUrl,
+                image: viewSavedPageProvider.imageUrl,
                 fit: BoxFit.cover,
                 fadeInDuration: const Duration(seconds: 1),
               ),
@@ -37,13 +36,11 @@ class SelectWikiPage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  WikiSelectPageButtons(),
                   Text(
-                    selectWikiPageProvider.articleTitle,
+                    viewSavedPageProvider.title,
                     style: Theme.of(context).textTheme.headline6,
                     textAlign: TextAlign.center,
                   ),
-                  WikiLocationModule()
                 ],
               ),
             ),
@@ -53,7 +50,7 @@ class SelectWikiPage extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(15),
                 child: Text(
-                  selectWikiPageProvider.summary,
+                  '${viewSavedPageProvider.pageId}',
                   maxLines: 20,
                   overflow: TextOverflow.fade,
                 ),
