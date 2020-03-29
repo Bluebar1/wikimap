@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
-import 'package:wiki_map/modules/wiki_location_module.dart';
-import 'package:wiki_map/modules/wiki_select_page_buttons.dart';
+import 'package:wiki_map/pages/saved_page_image_view.dart';
+import 'package:wiki_map/providers/saved_page_image_view_provider.dart';
 import 'package:wiki_map/providers/view_saved_page_provider.dart';
 import 'package:wiki_map/providers/theme_provider.dart';
 
@@ -20,14 +20,28 @@ class ViewSavedPage extends StatelessWidget {
             crossAxisCount: 1,
           ),
           children: <Widget>[
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: 300,
-              child: FadeInImage.memoryNetwork(
-                placeholder: kTransparentImage,
-                image: viewSavedPageProvider.imageUrl,
-                fit: BoxFit.cover,
-                fadeInDuration: const Duration(seconds: 1),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ChangeNotifierProvider(
+                          create: (_) => SavedPageImageViewProvider(),
+                          child: Consumer<SavedPageImageViewProvider>(
+                            builder: (context, provider, _) {
+                              return SavedPageImageView(
+                                  viewSavedPageProvider: viewSavedPageProvider);
+                            },
+                          ),
+                        )));
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: 300,
+                child: FadeInImage.memoryNetwork(
+                  placeholder: kTransparentImage,
+                  image: viewSavedPageProvider.imageUrl,
+                  fit: BoxFit.cover,
+                  fadeInDuration: const Duration(seconds: 1),
+                ),
               ),
             ),
             Container(
