@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:wiki_map/pages/home.dart';
 import 'package:wiki_map/providers/saved_pages_provider.dart';
 import 'package:wiki_map/providers/settings_provider.dart';
 import 'package:wiki_map/providers/theme_provider.dart';
 import 'package:wiki_map/providers/user_input_provider.dart';
+import 'package:wiki_map/services/geolocator_service.dart';
 //import 'package:wiki_map/style.dart';
 
 class MyApp extends StatelessWidget {
@@ -12,6 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+    final GeoLocatorService geoService = GeoLocatorService();
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<SettingsProvider>(
@@ -20,6 +23,11 @@ class MyApp extends StatelessWidget {
             create: (_) => UserInputProvider()),
         ChangeNotifierProvider<SavedPagesProvider>(
             create: (_) => SavedPagesProvider()),
+        FutureProvider(create: (context) => geoService.getCoords()),
+        ProxyProvider<Position, Future<List<Placemark>>>(
+          update: (context, position, placemarks) =>
+              (position != null) ? geoService.getAddress(position) : null,
+        )
 
         // ChangeNotifierProvider<WikiArticleListProvider>(
         //     create: (_) => WikiArticleListProvider())

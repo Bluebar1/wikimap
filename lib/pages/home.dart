@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:wiki_map/pages/dynamic_geosearch.dart';
 import 'package:wiki_map/pages/geosearch.dart';
@@ -12,6 +13,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var userInputProvider = Provider.of<UserInputProvider>(context);
+    final geoLocatorService = Provider.of<Position>(context);
     //var geoLocatorProvider = Provider.of<GeoLocatorProvider>(context);
     return Scaffold(
       resizeToAvoidBottomPadding: false,
@@ -118,21 +120,45 @@ class Home extends StatelessWidget {
                         IconButton(
                           icon: Icon(Icons.search),
                           onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                    ChangeNotifierProvider.value(
-                                        value: GeoLocatorProvider(),
-                                        child: Consumer<GeoLocatorProvider>(
-                                          builder: (BuildContext context,
-                                              GeoLocatorProvider provider,
-                                              Widget child) {
-                                            if (provider.position == null) {
-                                              return Center(
-                                                child:
-                                                    CircularProgressIndicator(),
-                                              );
-                                            } else {
-                                              return ChangeNotifierProvider
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(builder: (context) {
+                              return ChangeNotifierProvider.value(
+                                  value: MapProvider(geoLocatorService.latitude,
+                                      geoLocatorService.longitude),
+                                  child: Consumer<MapProvider>(
+                                    builder: (BuildContext context,
+                                        MapProvider provider, Widget child) {
+                                      if (provider.setOfMarkers == null) {
+                                        return Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      } else {
+                                        return DynamicGeoSearch();
+                                      }
+                                    },
+                                  ));
+                            }));
+                          },
+                        ),
+                        Text('Search My Current Location')
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              child: Text('Map Testing'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/*
+return ChangeNotifierProvider
                                                   .value(
                                                       value: MapProvider(
                                                           provider.position
@@ -158,24 +184,4 @@ class Home extends StatelessWidget {
                                                           }
                                                         },
                                                       ));
-                                            }
-                                          },
-                                        ))));
-                          },
-                        ),
-                        Text('Search My Current Location')
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              child: Text('Map Testing'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+                                                      */

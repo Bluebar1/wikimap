@@ -19,6 +19,7 @@ GestureDetector onTap go to SelectWikiPage
 */
 
 class SavedPages extends StatelessWidget {
+  
   void _viewSavedPage(BuildContext context, String title, int pageId) {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => ChangeNotifierProvider.value(

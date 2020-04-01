@@ -12,43 +12,56 @@ class SavedPageImageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //var viewSaved
-    var savedPageImageViewProvider =
-        Provider.of<SavedPageImageViewProvider>(context);
-    return Stack(
-      children: <Widget>[
-        Positioned.fill(
-          child: PhotoView(
-            imageProvider: NetworkImage('${viewSavedPageProvider.imageUrl}'),
-            controller: savedPageImageViewProvider.photoViewController,
+    return ChangeNotifierProvider(
+      create: (_) => SavedPageImageViewProvider(),
+      child: Consumer<SavedPageImageViewProvider>(
+        builder: (context, provider, _) {
+          return Stack(
+            children: <Widget>[
+              Positioned.fill(
+                child: PhotoView(
+                  imageProvider:
+                      NetworkImage('${viewSavedPageProvider.imageUrl}'),
+                  controller: provider.photoViewController,
+                ),
+              ),
+              Positioned(
+                top: 50,
+                child: Text(
+                  'Scale applied: ' + '${provider.scaleCopy}',
+                  style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                      color: Color.fromRGBO(192, 192, 192, 1.0)),
+                ),
+              ),
+              Positioned(
+                bottom: 50,
+                left: 20,
+                child: GestureDetector(
+                    onTap: () => Navigator.of(context).pop(),
+                    child: Text(
+                      'Go back',
+                      style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                          color: Color.fromRGBO(192, 192, 192, 1.0)),
+                    )),
+              )
+            ],
+          );
+        },
+        child: Container(
+            child: PhotoView.customChild(
+          child: FadeInImage.memoryNetwork(
+            placeholder: kTransparentImage,
+            image: viewSavedPageProvider.imageUrl,
+            fadeInDuration: const Duration(seconds: 1),
           ),
-        ),
-        Positioned(
-          top: 50,
-          child: Text(
-            'Scale applied: ' + '${savedPageImageViewProvider.scaleCopy}',
-            style: TextStyle(
-                fontFamily: 'Montserrat',
-                fontWeight: FontWeight.w600,
-                fontSize: 14,
-                color: Color.fromRGBO(192, 192, 192, 1.0)),
-          ),
-        ),
-        Positioned(
-          bottom: 50,
-          left: 20,
-          child: GestureDetector(
-              onTap: () => Navigator.of(context).pop(),
-              child: Text(
-                'Go back',
-                style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Color.fromRGBO(192, 192, 192, 1.0)),
-              )),
-        )
-      ],
+        )),
+      ),
     );
   }
 }
